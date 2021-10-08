@@ -23,6 +23,35 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: windowsHeight * 0.15,
             ),
+            SizedBox(
+                height: windowsHeight * 0.5,
+                child: ListView(
+                  // scrollDirection: Axis.horizontal,
+                  children: [
+                    Text(
+                      "Ovo je home screen!",
+                      style: Theme.of(context).textTheme.headline1,
+                      textAlign: TextAlign.left,
+                    ),
+                    Text(
+                      "Ovo je home screen!",
+                      style: Theme.of(context).textTheme.headline1,
+                      textAlign: TextAlign.left,
+                    ),
+                    Text(
+                      "Ovo je home screen!",
+                      style: Theme.of(context).textTheme.headline1,
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                  // itemBuilder: (BuildContext context, int index) {
+                  //   return Text(
+                  //     "Ovo je home screen!",
+                  //     style: Theme.of(context).textTheme.headline1,
+                  //     textAlign: TextAlign.left,
+                  //   );
+                  // }),
+                ))
           ],
         ));
   }

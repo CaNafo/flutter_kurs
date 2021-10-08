@@ -66,11 +66,11 @@ class LoginScreen extends StatelessWidget {
                 "By Continuing you agree to the Terms and Conditions",
                 style: Theme.of(context).textTheme.subtitle2,
               ),
-              const TextField(
-                  style: TextStyle(color: Colors.blue),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter a search term')),
+              // const TextField(
+              //     style: TextStyle(color: Colors.blue),
+              //     decoration: InputDecoration(
+              //         border: OutlineInputBorder(),
+              //         hintText: 'Enter a search term')),
             ],
           ),
         ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/providers/home_provider.dart';
 import 'package:movies_app/screens/favorites_screen.dart';
 import 'package:movies_app/screens/home_screen.dart';
 import 'package:movies_app/screens/search_screen.dart';
 import 'package:movies_app/screens/settings_screen.dart';
+import 'package:provider/provider.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
@@ -36,7 +38,10 @@ class _TabsScreenState extends State<TabsScreen> {
         centerTitle: true,
       ),
       body: Center(
-        child: listOfScreens.entries.elementAt(_selectedIndex).value,
+        child: ChangeNotifierProvider(
+          create: (context) => HomeProvider(),
+          child: listOfScreens.entries.elementAt(_selectedIndex).value,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,

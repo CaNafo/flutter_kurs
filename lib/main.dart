@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/providers/login_provider.dart';
+import 'package:movies_app/screens/details_screen.dart';
 import 'package:movies_app/screens/home_screen.dart';
 import 'package:movies_app/screens/login_screen.dart';
 import 'package:movies_app/screens/tabs_screen.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      // home: DetailsScreen(),
       home: ChangeNotifierProvider(
         create: (context) => LoginProvider(),
         child: const LoginScreen(),

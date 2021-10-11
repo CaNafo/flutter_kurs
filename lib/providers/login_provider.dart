@@ -5,11 +5,11 @@ import 'package:http/http.dart' as http;
 
 class LoginProvider extends ChangeNotifier {
   Future<bool> login(String username, String password) async {
-    var apiUrl = Constants.baseUrl + "/user/login";
+    var apiUrl = "${Constants.baseUrl}/user/login";
     var headers = {
       "Content-Type": "application/json",
       "Accept": "*/*",
-      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Encoding": "gzip, deflate, br"
     };
 
     var res = await http.post(

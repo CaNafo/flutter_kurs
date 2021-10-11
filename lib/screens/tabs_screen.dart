@@ -25,6 +25,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         actions: const [
           CircleAvatar(
             child: Icon(Icons.supervised_user_circle),

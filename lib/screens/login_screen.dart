@@ -53,9 +53,11 @@ class LoginScreen extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (_) => LoginDialog(
-                          formKey: _formKey,
-                          emailController: emailController,
-                          passController: passController),
+                        parentContext: context,
+                        formKey: _formKey,
+                        emailController: emailController,
+                        passController: passController,
+                      ),
                     );
                     // showCupertinoModalPopup(
                     //   context: context,
@@ -107,12 +109,14 @@ class LoginDialog extends StatelessWidget {
     required GlobalKey<FormState> formKey,
     required this.emailController,
     required this.passController,
+    required this.parentContext,
   })  : _formKey = formKey,
         super(key: key);
 
   final GlobalKey<FormState> _formKey;
   final TextEditingController emailController;
   final TextEditingController passController;
+  final BuildContext parentContext;
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +163,7 @@ class LoginDialog extends StatelessWidget {
         TextButton(
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              Provider.of<LoginProvider>(context, listen: false)
+              Provider.of<LoginProvider>(parentContext, listen: false)
                   .login(emailController.text, passController.text)
                   .then(
                 (value) {
@@ -170,7 +174,7 @@ class LoginDialog extends StatelessWidget {
                   } else {
                     Navigator.of(context).pop();
                     showDialog(
-                      context: context,
+                      context: parentContext,
                       builder: (_) => AlertDialog(
                         title: const Text('Pažnja!'),
                         content: const Text(
@@ -178,7 +182,7 @@ class LoginDialog extends StatelessWidget {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator.of(parentContext).pop();
                             },
                             child: const Text('OK'),
                           ),

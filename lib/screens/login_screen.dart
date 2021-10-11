@@ -52,88 +52,10 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (_) => AlertDialog(
-                        title: const Text('Prijava'),
-                        content: SizedBox(
-                          height: 150,
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Polje e-mail ne smije biti prazno!';
-                                    }
-                                    return null;
-                                  },
-                                  controller: emailController,
-                                  decoration: const InputDecoration(
-                                      hintText: "email@test.com"),
-                                ),
-                                TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Polje lozinka ne smije biti prazno!';
-                                    }
-                                    return null;
-                                  },
-                                  controller: passController,
-                                  obscureText: true,
-                                  decoration: const InputDecoration(
-                                      hintText: "lozinka"),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Odustani'),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                Provider.of<LoginProvider>(context,
-                                        listen: false)
-                                    .login(emailController.text,
-                                        passController.text)
-                                    .then(
-                                  (value) {
-                                    if (value) {
-                                      Navigator.of(context).pop();
-                                      Navigator.pushReplacementNamed(
-                                          context, TabsScreen.routeName);
-                                    } else {
-                                      Navigator.of(context).pop();
-                                      showDialog(
-                                        context: context,
-                                        builder: (_) => AlertDialog(
-                                          title: const Text('Pažnja!'),
-                                          content: const Text(
-                                              'Došlo je do greške prilikom prijave, provjerite kredencijale i pokušajte ponovo.'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                  },
-                                );
-                              }
-                            },
-                            child: const Text('Prijavi me'),
-                          ),
-                        ],
-                      ),
+                      builder: (_) => LoginDialog(
+                          formKey: _formKey,
+                          emailController: emailController,
+                          passController: passController),
                     );
                     // showCupertinoModalPopup(
                     //   context: context,
@@ -175,6 +97,102 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class LoginDialog extends StatelessWidget {
+  const LoginDialog({
+    Key? key,
+    required GlobalKey<FormState> formKey,
+    required this.emailController,
+    required this.passController,
+  })  : _formKey = formKey,
+        super(key: key);
+
+  final GlobalKey<FormState> _formKey;
+  final TextEditingController emailController;
+  final TextEditingController passController;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Prijava'),
+      content: SizedBox(
+        height: 150,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Polje e-mail ne smije biti prazno!';
+                  }
+                  return null;
+                },
+                controller: emailController,
+                decoration: const InputDecoration(hintText: "email@test.com"),
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Polje lozinka ne smije biti prazno!';
+                  }
+                  return null;
+                },
+                controller: passController,
+                obscureText: true,
+                decoration: const InputDecoration(hintText: "lozinka"),
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Odustani'),
+        ),
+        TextButton(
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              Provider.of<LoginProvider>(context, listen: false)
+                  .login(emailController.text, passController.text)
+                  .then(
+                (value) {
+                  if (value) {
+                    Navigator.of(context).pop();
+                    Navigator.pushReplacementNamed(
+                        context, TabsScreen.routeName);
+                  } else {
+                    Navigator.of(context).pop();
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text('Pažnja!'),
+                        content: const Text(
+                            'Došlo je do greške prilikom prijave, provjerite kredencijale i pokušajte ponovo.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+              );
+            }
+          },
+          child: const Text('Prijavi me'),
+        ),
+      ],
     );
   }
 }

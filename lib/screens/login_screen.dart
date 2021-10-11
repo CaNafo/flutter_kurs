@@ -1,7 +1,12 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movies_app/providers/login_provider.dart';
 import 'package:movies_app/screens/tabs_screen.dart';
 
 import 'package:movies_app/widgets/login_button_small.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -9,6 +14,9 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double windowsHeight = MediaQuery.of(context).size.height;
+    var emailController = TextEditingController();
+    var passController = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
       // appBar: AppBar(
@@ -41,8 +49,105 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, TabsScreen.routeName),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text('Prijava'),
+                        content: SizedBox(
+                          height: 150,
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Polje e-mail ne smije biti prazno!';
+                                    }
+                                    return null;
+                                  },
+                                  controller: emailController,
+                                  decoration: const InputDecoration(
+                                      hintText: "email@test.com"),
+                                ),
+                                TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Polje lozinka ne smije biti prazno!';
+                                    }
+                                    return null;
+                                  },
+                                  controller: passController,
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                      hintText: "lozinka"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Odustani'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                Provider.of<LoginProvider>(context,
+                                        listen: false)
+                                    .login(emailController.text,
+                                        passController.text)
+                                    .then(
+                                  (value) {
+                                    if (value) {
+                                      Navigator.of(context).pop();
+                                      Navigator.pushReplacementNamed(
+                                          context, TabsScreen.routeName);
+                                    } else {
+                                      Navigator.of(context).pop();
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialog(
+                                          title: const Text('Pažnja!'),
+                                          content: const Text(
+                                              'Došlo je do greške prilikom prijave, provjerite kredencijale i pokušajte ponovo.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  },
+                                );
+                              }
+                            },
+                            child: const Text('Prijavi me'),
+                          ),
+                        ],
+                      ),
+                    );
+                    // showCupertinoModalPopup(
+                    //   context: context,
+                    //   builder: (context) => Column(
+                    //     children: const [
+                    //       Text("Unesite podate za priajvu!"),
+                    //     ],
+                    //   ),
+                    // ).then((value) {
+                    //   Provider.of<LoginProvider>(context, listen: false)
+                    //       .login("test@mail.com", "test123");
+                    // });
+                    // Navigator.pushNamed(context, TabsScreen.routeName);
+                  },
                   child: const Text("Sign in with Email"),
                 ),
               ),
@@ -66,11 +171,6 @@ class LoginScreen extends StatelessWidget {
                 "By Continuing you agree to the Terms and Conditions",
                 style: Theme.of(context).textTheme.subtitle2,
               ),
-              // const TextField(
-              //     style: TextStyle(color: Colors.blue),
-              //     decoration: InputDecoration(
-              //         border: OutlineInputBorder(),
-              //         hintText: 'Enter a search term')),
             ],
           ),
         ),

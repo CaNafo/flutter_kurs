@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/providers/login_provider.dart';
 import 'package:movies_app/screens/home_screen.dart';
 import 'package:movies_app/screens/login_screen.dart';
 import 'package:movies_app/screens/tabs_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,7 +52,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const LoginScreen(),
+      home: ChangeNotifierProvider(
+        create: (context) => LoginProvider(),
+        child: const LoginScreen(),
+      ),
       routes: {
         // When navigating to the "/second" route, build the SecondScreen widget.
         TabsScreen.routeName: (context) => const TabsScreen(),

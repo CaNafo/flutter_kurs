@@ -15,7 +15,7 @@ class _MovieListState extends State<MovieList> {
     // String jad = widget.listOfData().then((value) => print(value[0]["title"]));
     final double windowsHeight = MediaQuery.of(context).size.height;
     final double windowsWidth = MediaQuery.of(context).size.width;
-    return widget.listOfData.length > 0
+    return widget.listOfData.isNotEmpty
         ? Padding(
             padding: const EdgeInsets.all(5.0),
             child: Column(
@@ -25,7 +25,7 @@ class _MovieListState extends State<MovieList> {
                   width: windowsWidth,
                   child: Text(
                     widget.title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 21,
                     ),
@@ -53,13 +53,13 @@ class _MovieListState extends State<MovieList> {
                               ),
                               Text(
                                 widget.listOfData[0]["title"],
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               )
                             ]),
                           );
                         })),
               ],
             ))
-        : CircularProgressIndicator.adaptive();
+        : const CircularProgressIndicator.adaptive();
   }
 }

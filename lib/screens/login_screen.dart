@@ -170,7 +170,7 @@ class LoginDialog extends StatelessWidget {
                   if (value) {
                     Navigator.of(context).pop();
                     Navigator.pushReplacementNamed(
-                        context, TabsScreen.routeName);
+                        parentContext, TabsScreen.routeName);
                   } else {
                     Navigator.of(context).pop();
                     showDialog(

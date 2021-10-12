@@ -64,14 +64,33 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: windowsHeight * 0.05,
             ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return MovieList(
-                        data.elementAt(index)["title"], widget.apiResult);
-                  }),
-            ),
+            FutureBuilder(
+              future: Provider.of<HomeProvider>(context).getContentById(1),
+              builder: (context, snapshot) =>
+                  snapshot.connectionState == ConnectionState.waiting
+                      ? CircularProgressIndicator()
+                      : SizedBox(
+                          height: 450,
+                          child: ListView.builder(
+                            itemCount: (snapshot.data as List<dynamic>).length,
+                            itemBuilder: (context, index) => Text(
+                              ((snapshot.data as List<dynamic>)[index]
+                                  as Map<String, dynamic>)['title'],
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+            )
+            // Expanded(
+            //   child: ListView.builder(
+            //       itemCount: data.length,
+            //       itemBuilder: (BuildContext context, int index) {
+            //         return MovieList(
+            //             data.elementAt(index)["title"], widget.apiResult);
+            //       }),
+            // ),
           ],
         ));
   }

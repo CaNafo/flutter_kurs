@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/providers/login_provider.dart';
+import 'package:movies_app/const.dart';
+import 'package:movies_app/providers/auth_provider.dart';
 import 'package:movies_app/screens/tabs_screen.dart';
 
 import 'package:movies_app/widgets/login_button_small.dart';
@@ -19,13 +20,9 @@ class LoginScreen extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      // ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 50.0),
+          padding: Constants.loginScreenPadding,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -52,25 +49,12 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (_) => LoginDialog(
-                        parentContext: context,
+                      builder: (context) => LoginDialog(
                         formKey: _formKey,
                         emailController: emailController,
                         passController: passController,
                       ),
                     );
-                    // showCupertinoModalPopup(
-                    //   context: context,
-                    //   builder: (context) => Column(
-                    //     children: const [
-                    //       Text("Unesite podate za priajvu!"),
-                    //     ],
-                    //   ),
-                    // ).then((value) {
-                    //   Provider.of<LoginProvider>(context, listen: false)
-                    //       .login("test@mail.com", "test123");
-                    // });
-                    // Navigator.pushNamed(context, TabsScreen.routeName);
                   },
                   child: const Text("Sign in with Email"),
                 ),
@@ -109,14 +93,12 @@ class LoginDialog extends StatelessWidget {
     required GlobalKey<FormState> formKey,
     required this.emailController,
     required this.passController,
-    required this.parentContext,
   })  : _formKey = formKey,
         super(key: key);
 
   final GlobalKey<FormState> _formKey;
   final TextEditingController emailController;
   final TextEditingController passController;
-  final BuildContext parentContext;
 
   @override
   Widget build(BuildContext context) {
@@ -163,26 +145,26 @@ class LoginDialog extends StatelessWidget {
         TextButton(
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              Provider.of<LoginProvider>(parentContext, listen: false)
+              Provider.of<AuthProvider>(context, listen: false)
                   .login(emailController.text, passController.text)
                   .then(
                 (value) {
                   if (value) {
                     Navigator.of(context).pop();
                     Navigator.pushReplacementNamed(
-                        parentContext, TabsScreen.routeName);
+                        context, TabsScreen.routeName);
                   } else {
                     Navigator.of(context).pop();
                     showDialog(
-                      context: parentContext,
-                      builder: (_) => AlertDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
                         title: const Text('Pažnja!'),
                         content: const Text(
                             'Došlo je do greške prilikom prijave, provjerite kredencijale i pokušajte ponovo.'),
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.of(parentContext).pop();
+                              Navigator.of(context).pop();
                             },
                             child: const Text('OK'),
                           ),

@@ -8,4 +8,5 @@ class Constants {
     right: 22.0,
     top: 50.0,
   );
+  static const moviesListContainerColor = Color.fromRGBO(51, 51, 51, 1);
 }

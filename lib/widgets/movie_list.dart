@@ -1,65 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/const.dart';
 
-class MovieList extends StatefulWidget {
-  final String title;
-  final List<dynamic> listOfData;
-  const MovieList(this.title, this.listOfData, {Key? key}) : super(key: key);
+class MovieList extends StatelessWidget {
+  final List<Map<String, dynamic>>? moviesData;
 
-  @override
-  _MovieListState createState() => _MovieListState();
-}
+  const MovieList({
+    key,
+    @required this.moviesData,
+  }) : super(key: key);
 
-class _MovieListState extends State<MovieList> {
   @override
   Widget build(BuildContext context) {
-    // String jad = widget.listOfData().then((value) => print(value[0]["title"]));
-    final double windowsHeight = MediaQuery.of(context).size.height;
-    final double windowsWidth = MediaQuery.of(context).size.width;
-    return widget.listOfData.isNotEmpty
-        ? Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: windowsWidth,
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 21,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                SizedBox(
-                    height: windowsHeight * 0.2,
-                    child: ListView.builder(
-                        itemCount: 4,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            height: windowsWidth,
-                            width: windowsWidth * 0.5,
-                            child: Column(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset(
-                                    "assets/images/movies.jpg",
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                widget.listOfData[0]["title"],
-                                style: const TextStyle(color: Colors.white),
-                              )
-                            ]),
-                          );
-                        })),
-              ],
-            ))
-        : const CircularProgressIndicator.adaptive();
+    final displaySize = MediaQuery.of(context).size;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 10.0,
+          ),
+          child: Text(
+            "Najgledanije",
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              10,
+            ),
+            color: Constants.moviesListContainerColor,
+          ),
+          padding: const EdgeInsets.only(
+            right: 8,
+          ),
+          height: displaySize.height * 0.2,
+          child: ListView.builder(
+            itemCount: moviesData!.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) => SingleMovie(
+              displaySize: displaySize,
+              moviesData: moviesData![index],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SingleMovie extends StatelessWidget {
+  const SingleMovie({
+    Key? key,
+    required this.displaySize,
+    required this.moviesData,
+  }) : super(key: key);
+
+  final Size displaySize;
+  final Map<String, dynamic>? moviesData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(
+        8.0,
+      ),
+      width: displaySize.width * 0.5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: SizedBox(
+              height: displaySize.width * 0.3,
+              width: displaySize.width * 0.5,
+              child: Image.network(
+                moviesData!['coverLink'],
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            moviesData!["title"],
+            style: const TextStyle(color: Colors.white),
+          )
+        ],
+      ),
+    );
   }
 }

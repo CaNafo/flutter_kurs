@@ -24,7 +24,6 @@ class AuthProvider extends ChangeNotifier {
 
     if (res.statusCode != 200) return false;
     var test = jsonDecode(res.body) as Map<String, dynamic>;
-    // saveToken(.toString());
     saveToken(test['jwt'].toString());
 
     return true;

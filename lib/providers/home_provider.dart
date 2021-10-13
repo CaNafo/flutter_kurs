@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeProvider extends ChangeNotifier {
-  Future<List> getContentById(int genreId) async {
+  Future<List<Map<String, dynamic>>?> getContentById(int genreId) async {
     var apiUrl = '${Constants.baseUrl}/content/by-category';
     var token = await getJwtToken();
 
@@ -24,16 +24,17 @@ class HomeProvider extends ChangeNotifier {
       body: jsonEncode({"genreId": genreId}),
     );
 
-    var resList = jsonDecode(res.body) as List<dynamic>;
+    if (res.statusCode != 200) return null;
+
+    var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
 
     return resList;
-    // log((a[0] as Map<String, dynamic>)['contentType']['name'].toString());
-    // log(a.toString());
   }
 
   Future<String?> getJwtToken() async {
     var prefs = await SharedPreferences.getInstance();
-    // notifyListeners();
     return prefs.getString("token");
   }
 }

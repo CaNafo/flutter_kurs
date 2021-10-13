@@ -16,15 +16,16 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
   Map<int, dynamic> listOfScreens = {
-    0: HomeScreen(),
-    1: SearchScreen(),
-    2: FavoritesScreen(),
-    3: SettingsScreen()
+    0: ChangeNotifierProvider(
+      create: (context) => HomeProvider(),
+      child: const HomeScreen(),
+    ),
+    1: const SearchScreen(),
+    2: const FavoritesScreen(),
+    3: const SettingsScreen()
   };
   @override
   Widget build(BuildContext context) {
-    final double windowsHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -34,15 +35,8 @@ class _TabsScreenState extends State<TabsScreen> {
           )
         ],
         automaticallyImplyLeading: false,
-        title: const Text("Movie App"),
-        centerTitle: true,
       ),
-      body: Center(
-        child: ChangeNotifierProvider(
-          create: (context) => HomeProvider(),
-          child: listOfScreens.entries.elementAt(_selectedIndex).value,
-        ),
-      ),
+      body: listOfScreens.entries.elementAt(_selectedIndex).value,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
         showUnselectedLabels: false,

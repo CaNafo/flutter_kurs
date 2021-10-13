@@ -35,6 +35,31 @@ class ContentProvider with ChangeNotifier {
     return resList;
   }
 
+  Future<List<Map<String, dynamic>>?> getAllGenres() async {
+    var apiUrl = Constants.baseUrl;
+    var token = await Token.getJwtToken();
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Authorization": "Bearer $token",
+    };
+
+    var res = await http.get(
+      Uri.parse('$apiUrl/genre/all'),
+      headers: headers,
+    );
+
+    if (res.statusCode != 200) return null;
+
+    var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    return resList;
+  }
+
   Future<Map<String, dynamic>?> getContentDetails(int contentId) async {
     var apiUrl = Constants.baseUrl;
     var token = await Token.getJwtToken();

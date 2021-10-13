@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/providers/content_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:movies_app/providers/home_provider.dart';
@@ -21,7 +22,10 @@ class _TabsScreenState extends State<TabsScreen> {
       create: (context) => HomeProvider(),
       child: const HomeScreen(),
     ),
-    1: const SearchScreen(),
+    1: ChangeNotifierProvider(
+      create: (context) => ContentProvider(),
+      child: const SearchScreen(),
+    ),
     2: const FavoritesScreen(),
     3: const SettingsScreen()
   };

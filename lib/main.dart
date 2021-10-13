@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/helpers/token.dart';
+import 'package:movies_app/screens/details_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:movies_app/providers/auth_provider.dart';
@@ -18,19 +20,49 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => AuthProvider(),
       builder: (context, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Movies app',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: const Color.fromRGBO(26, 26, 26, 1),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color.fromRGBO(26, 26, 26, 1),
+            elevation: 0,
+          ),
           textTheme: const TextTheme(
             headline1: TextStyle(
               color: Colors.white,
               fontSize: 40,
               fontWeight: FontWeight.bold,
             ),
+            headline2: TextStyle(
+              color: Colors.white,
+              fontSize: 35,
+              fontWeight: FontWeight.w300,
+            ),
             subtitle2: TextStyle(
-              color: Colors.grey,
+              color: Color.fromRGBO(
+                193,
+                193,
+                193,
+                1,
+              ),
               fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+            subtitle1: TextStyle(
+              color: Color.fromRGBO(
+                193,
+                193,
+                193,
+                1,
+              ),
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            caption: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -55,8 +87,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: FutureBuilder(
-          future:
-              Provider.of<AuthProvider>(context, listen: false).getJwtToken(),
+          future: Token.getJwtToken(),
           builder: (ctx, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
                   ? const Center(
@@ -68,6 +99,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           TabsScreen.routeName: (context) => const TabsScreen(),
+          DetailsScreen.routeName: (context) => const DetailsScreen(),
         },
       ),
     );

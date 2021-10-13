@@ -4,12 +4,12 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:movies_app/const.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:movies_app/helpers/token.dart';
 
-class HomeProvider extends ChangeNotifier {
+class HomeProvider with ChangeNotifier {
   Future<List<Map<String, dynamic>>?> getContentById(int genreId) async {
     var apiUrl = '${Constants.baseUrl}/content/by-category';
-    var token = await getJwtToken();
+    var token = await Token.getJwtToken();
 
     var headers = {
       "Content-Type": "application/json",
@@ -21,7 +21,9 @@ class HomeProvider extends ChangeNotifier {
     var res = await http.post(
       Uri.parse(apiUrl),
       headers: headers,
-      body: jsonEncode({"genreId": genreId}),
+      body: jsonEncode(
+        {"genreId": genreId, "contentTypeId": 1},
+      ),
     );
 
     if (res.statusCode != 200) return null;
@@ -31,11 +33,6 @@ class HomeProvider extends ChangeNotifier {
         .toList();
 
     return resList;
-  }
-
-  Future<String?> getJwtToken() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getString("token");
   }
 
   void test() {

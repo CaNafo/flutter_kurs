@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:movies_app/const.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthProvider extends ChangeNotifier {
+import 'package:movies_app/helpers/token.dart';
+import 'package:movies_app/const.dart';
+
+class AuthProvider with ChangeNotifier {
   Future<bool> login(String username, String password) async {
     var apiUrl = "${Constants.baseUrl}/user/login";
     var headers = {
@@ -24,18 +25,8 @@ class AuthProvider extends ChangeNotifier {
 
     if (res.statusCode != 200) return false;
     var test = jsonDecode(res.body) as Map<String, dynamic>;
-    saveToken(test['jwt'].toString());
+    Token.saveToken(test['jwt'].toString());
 
     return true;
-  }
-
-  void saveToken(String token) async {
-    var prefs = await SharedPreferences.getInstance();
-    prefs.setString("token", token);
-  }
-
-  Future<String?> getJwtToken() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getString("token");
   }
 }

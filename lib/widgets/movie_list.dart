@@ -87,14 +87,18 @@ class SingleMovie extends StatelessWidget {
               ),
             ),
           );
-          Provider.of<ContentProvider>(context, listen: false)
+          final contentProvider =
+              Provider.of<ContentProvider>(context, listen: false);
+          contentProvider
               .getContentDetails(
             moviesData!['contentId'],
           )
               .then((value) {
             Navigator.of(context).pop();
-            Navigator.pushNamed(context, DetailsScreen.routeName,
-                arguments: value);
+            Navigator.pushNamed(context, DetailsScreen.routeName, arguments: {
+              "data": value,
+              "contentId": moviesData!['contentId']
+            });
           });
         },
         child: Container(

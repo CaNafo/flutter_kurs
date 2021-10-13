@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:movies_app/helpers/token.dart';
 import 'package:movies_app/screens/details_screen.dart';

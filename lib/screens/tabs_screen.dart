@@ -55,7 +55,7 @@ class _TabsScreenState extends State<TabsScreen> {
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             activeIcon: CircleAvatar(
-              child: Icon(Icons.home, color: Colors.white),
+              child: Icon(Icons.search, color: Colors.white),
               backgroundColor: Colors.blue,
             ),
             icon: Icon(Icons.search, color: Colors.blue),

@@ -37,4 +37,8 @@ class HomeProvider extends ChangeNotifier {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getString("token");
   }
+
+  void test() {
+    log("TESTTT");
+  }
 }

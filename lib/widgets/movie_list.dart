@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:movies_app/const.dart';
+import 'package:movies_app/providers/home_provider.dart';
+import 'package:provider/provider.dart';
 
 class MovieList extends StatelessWidget {
   final List<Map<String, dynamic>>? moviesData;
@@ -65,33 +69,39 @@ class SingleMovie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(
-        8.0,
-      ),
-      width: displaySize.width * 0.5,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: SizedBox(
-              height: displaySize.width * 0.3,
-              width: displaySize.width * 0.5,
-              child: Image.network(
-                moviesData!['coverLink'],
-                fit: BoxFit.fill,
+    return InkWell(
+      onTap: () {
+        log(moviesData!['contentId'].toString());
+        Provider.of<HomeProvider>(context, listen: false).test();
+      },
+      child: Container(
+        padding: const EdgeInsets.all(
+          8.0,
+        ),
+        width: displaySize.width * 0.5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: SizedBox(
+                height: displaySize.width * 0.3,
+                width: displaySize.width * 0.5,
+                child: Image.network(
+                  moviesData!['coverLink'],
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            moviesData!["title"],
-            style: const TextStyle(color: Colors.white),
-          )
-        ],
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              moviesData!["title"],
+              style: const TextStyle(color: Colors.white),
+            )
+          ],
+        ),
       ),
     );
   }

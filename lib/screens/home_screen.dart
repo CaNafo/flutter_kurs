@@ -20,9 +20,7 @@ class HomeScreen extends StatelessWidget {
               builder: (context,
                       AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) =>
                   snapshot.connectionState == ConnectionState.waiting
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
+                      ? const Center()
                       : snapshot.data != null
                           ? MovieList(moviesData: snapshot.data)
                           : Text("No data"),

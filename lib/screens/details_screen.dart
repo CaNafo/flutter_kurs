@@ -82,6 +82,31 @@ class DetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
+            if (contentDetails['seasons'].length > 0)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Lista sezona: ",
+                    style: theme.textTheme.subtitle1,
+                  ),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      itemCount: contentDetails['seasons'].length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                        ),
+                        child: Text(
+                          "- ${contentDetails['seasons'][index]['name']} broj epizoda ${contentDetails['seasons'][index]['episodes'].length}",
+                          style: theme.textTheme.subtitle2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

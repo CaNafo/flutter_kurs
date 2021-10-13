@@ -1,14 +1,16 @@
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
-import 'package:movies_app/const.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+
+import 'package:movies_app/const.dart';
 import 'package:movies_app/helpers/token.dart';
 
 class HomeProvider with ChangeNotifier {
-  Future<List<Map<String, dynamic>>?> getContentById(int genreId) async {
-    var apiUrl = '${Constants.baseUrl}/content/by-category';
+  Future<List<Map<String, dynamic>>?> getContentByReleaseDate(
+      int typeId) async {
+    var apiUrl =
+        '${Constants.baseUrl}/content/by-release-date?contentTypeId=$typeId';
     var token = await Token.getJwtToken();
 
     var headers = {
@@ -18,12 +20,9 @@ class HomeProvider with ChangeNotifier {
       "Authorization": "Bearer $token",
     };
 
-    var res = await http.post(
+    var res = await http.get(
       Uri.parse(apiUrl),
       headers: headers,
-      body: jsonEncode(
-        {"genreId": genreId, "contentTypeId": 1},
-      ),
     );
 
     if (res.statusCode != 200) return null;
@@ -35,7 +34,28 @@ class HomeProvider with ChangeNotifier {
     return resList;
   }
 
-  void test() {
-    log("TESTTT");
+  Future<List<Map<String, dynamic>>?> getContentByRating(int typeId) async {
+    var apiUrl = '${Constants.baseUrl}/content/by-rating?contentTypeId=$typeId';
+    var token = await Token.getJwtToken();
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Authorization": "Bearer $token",
+    };
+
+    var res = await http.get(
+      Uri.parse(apiUrl),
+      headers: headers,
+    );
+
+    if (res.statusCode != 200) return null;
+
+    var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    return resList;
   }
 }

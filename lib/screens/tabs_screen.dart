@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:movies_app/providers/home_provider.dart';
 import 'package:movies_app/screens/favorites_screen.dart';
 import 'package:movies_app/screens/home_screen.dart';
 import 'package:movies_app/screens/search_screen.dart';
 import 'package:movies_app/screens/settings_screen.dart';
-import 'package:provider/provider.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);

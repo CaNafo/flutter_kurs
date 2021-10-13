@@ -1,18 +1,18 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:movies_app/const.dart';
 import 'package:movies_app/providers/content_provider.dart';
-import 'package:movies_app/providers/home_provider.dart';
 import 'package:movies_app/screens/details_screen.dart';
-import 'package:provider/provider.dart';
 
 class MovieList extends StatelessWidget {
   final List<Map<String, dynamic>>? moviesData;
+  final String? title;
 
   const MovieList({
     key,
     @required this.moviesData,
+    @required this.title,
   }) : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class MovieList extends StatelessWidget {
             left: 10.0,
           ),
           child: Text(
-            "Najgledanije",
+            title ?? "",
             style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
@@ -121,7 +121,7 @@ class SingleMovie extends StatelessWidget {
               ),
               Text(
                 moviesData!["title"],
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white, fontSize: 15),
               )
             ],
           ),

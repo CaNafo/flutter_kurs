@@ -153,10 +153,22 @@ class DetailsScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  detailsProvider.conentComments[index]['user']
-                                      ['firstName'],
-                                  style: theme.textTheme.caption,
+                                Row(
+                                  children: [
+                                    Text(
+                                      detailsProvider.conentComments[index]
+                                          ['user']['firstName'],
+                                      style: theme.textTheme.caption,
+                                    ),
+                                    const SizedBox(
+                                      width: 2,
+                                    ),
+                                    Text(
+                                      detailsProvider.conentComments[index]
+                                          ['user']['lastName'],
+                                      style: theme.textTheme.caption,
+                                    ),
+                                  ],
                                 ),
                                 Text(
                                   detailsProvider.conentComments[index]

@@ -112,7 +112,7 @@ class SingleMovieProvider with ChangeNotifier {
     );
 
     if (res.statusCode == 200) {
-      _addComment("Marko", "Markovic", comment);
+      _addComment(parsedToken['firstName'], parsedToken['lastName'], comment);
     }
 
     return res.statusCode == 200;

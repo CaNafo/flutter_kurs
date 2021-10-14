@@ -7,8 +7,15 @@ import 'package:movies_app/const.dart';
 import 'package:movies_app/helpers/token.dart';
 
 class ContentProvider with ChangeNotifier {
-  Future<List<Map<String, dynamic>>?> getContentByGenreAndType(
-      int genreId, int typeId) async {
+  late final Map<int, List<Map<String, dynamic>>> _moviesList = {};
+  late final Map<int, List<Map<String, dynamic>>> _seriesList = {};
+
+  List<Map<String, dynamic>> getMoviesList(int genreId) =>
+      [..._moviesList[genreId]!.toList()];
+  List<Map<String, dynamic>> getSeriesList(int genreId) =>
+      [..._seriesList[genreId]!.toList()];
+
+  Future<bool> getContentByGenreAndType(int genreId, int typeId) async {
     var apiUrl = '${Constants.baseUrl}/content/by-category';
     var token = await Token.getJwtToken();
 
@@ -27,13 +34,19 @@ class ContentProvider with ChangeNotifier {
       ),
     );
 
-    if (res.statusCode != 200) return null;
+    if (res.statusCode != 200) return false;
 
     var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
 
-    return resList;
+    if (typeId == 1) {
+      _moviesList.addAll({genreId: resList});
+    } else {
+      _seriesList.addAll({genreId: resList});
+    }
+
+    return true;
   }
 
   Future<List<Map<String, dynamic>>?> getAllGenres() async {

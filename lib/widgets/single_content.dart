@@ -33,20 +33,19 @@ class SingleContent extends StatelessWidget {
                           future: contentProvider.getContentByGenreAndType(
                               snapshot.data![index]['genreId'],
                               contentType ?? 1),
-                          builder: (context,
-                                  AsyncSnapshot<List<Map<String, dynamic>>?>
-                                      moviesSnapshot) =>
-                              moviesSnapshot.connectionState ==
-                                      ConnectionState.waiting
-                                  ? Container(
-                                      color: Colors.grey,
-                                    )
-                                  : ExpandableMoviesList(
-                                      title: snapshot.data![index]['name'],
-                                      child: MovieList(
-                                        moviesData: moviesSnapshot.data,
-                                      ),
-                                    ),
+                          builder: (context, moviesSnapshot) => moviesSnapshot
+                                      .connectionState ==
+                                  ConnectionState.waiting
+                              ? Container(
+                                  color: Colors.grey,
+                                )
+                              : ExpandableMoviesList(
+                                  title: snapshot.data![index]['name'],
+                                  child: MovieList(
+                                    moviesData: contentProvider.getMoviesList(
+                                        snapshot.data![index]['genreId']),
+                                  ),
+                                ),
                         ),
                       ),
                     )

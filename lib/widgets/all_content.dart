@@ -31,10 +31,10 @@ class AllContent extends StatelessWidget {
                           children: [
                             FutureBuilder(
                               future: contentProvider.getContentByGenreAndType(
-                                  snapshot.data![index]['genreId'], 1),
-                              builder: (context,
-                                      AsyncSnapshot<List<Map<String, dynamic>>?>
-                                          moviesSnapshot) =>
+                                snapshot.data![index]['genreId'],
+                                1,
+                              ),
+                              builder: (context, moviesSnapshot) =>
                                   moviesSnapshot.connectionState ==
                                           ConnectionState.waiting
                                       ? Container(
@@ -44,16 +44,19 @@ class AllContent extends StatelessWidget {
                                           title:
                                               '${snapshot.data![index]['name']} (Filmovi)',
                                           child: MovieList(
-                                            moviesData: moviesSnapshot.data,
+                                            moviesData:
+                                                contentProvider.getMoviesList(
+                                              snapshot.data![index]['genreId'],
+                                            ),
                                           ),
                                         ),
                             ),
                             FutureBuilder(
                               future: contentProvider.getContentByGenreAndType(
-                                  snapshot.data![index]['genreId'], 2),
-                              builder: (context,
-                                      AsyncSnapshot<List<Map<String, dynamic>>?>
-                                          moviesSnapshot) =>
+                                snapshot.data![index]['genreId'],
+                                2,
+                              ),
+                              builder: (context, moviesSnapshot) =>
                                   moviesSnapshot.connectionState ==
                                           ConnectionState.waiting
                                       ? Container(
@@ -63,7 +66,10 @@ class AllContent extends StatelessWidget {
                                           title:
                                               '${snapshot.data![index]['name']} (Serije)',
                                           child: MovieList(
-                                            moviesData: moviesSnapshot.data,
+                                            moviesData:
+                                                contentProvider.getSeriesList(
+                                              snapshot.data![index]['genreId'],
+                                            ),
                                           ),
                                         ),
                             ),

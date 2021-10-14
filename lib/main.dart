@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:movies_app/helpers/token.dart';
 import 'package:movies_app/screens/details_screen.dart';
@@ -116,7 +114,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           TabsScreen.routeName: (context) => const TabsScreen(),
-          DetailsScreen.routeName: (context) => const DetailsScreen(),
+          DetailsScreen.routeName: (context) => DetailsScreen(),
         },
       ),
     );

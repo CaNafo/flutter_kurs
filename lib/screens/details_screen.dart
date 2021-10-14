@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'package:movies_app/providers/auth_provider.dart';
+import 'package:movies_app/widgets/single_movie_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
@@ -6,18 +7,16 @@ import 'package:movies_app/providers/content_provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({Key? key}) : super(key: key);
+  DetailsScreen({Key? key}) : super(key: key);
   static const routeName = '/content-details';
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final routeArguments =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final contentDetails = routeArguments['data'] as Map<String, dynamic>;
-    final contentId = routeArguments['contentId'] as int;
+    final detailsProvider = Provider.of<SingleMovieProvider>(context);
 
     final _controller = YoutubePlayerController(
-      initialVideoId: contentDetails['trailerLink'],
+      initialVideoId: detailsProvider.trailerLink,
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
@@ -40,7 +39,7 @@ class DetailsScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  contentDetails['title'],
+                  detailsProvider.contentTitle,
                   style: theme.textTheme.headline2,
                 ),
               ),
@@ -61,14 +60,14 @@ class DetailsScreen extends StatelessWidget {
                 height: 30,
               ),
               Text(
-                "Trajanje: ${contentDetails['duration']} minuta",
+                "Trajanje: ${detailsProvider.duration} minuta",
                 style: theme.textTheme.subtitle1,
               ),
               const SizedBox(
                 height: 5,
               ),
               Text(
-                "Godina izdavanja: ${contentDetails['year']}",
+                "Godina izdavanja: ${detailsProvider.year}",
                 style: theme.textTheme.subtitle1,
               ),
               const SizedBox(
@@ -82,14 +81,14 @@ class DetailsScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10),
                 height: 50,
                 child: ListView.builder(
-                  itemCount: contentDetails['genres'].length,
+                  itemCount: detailsProvider.genres.length,
                   itemBuilder: (context, index) => Text(
-                    '- ${contentDetails['genres'][index]['name']}',
+                    '- ${detailsProvider.genres[index]['name']}',
                     style: theme.textTheme.subtitle2,
                   ),
                 ),
               ),
-              if (contentDetails['seasons'].length > 0)
+              if (detailsProvider.seasons.length > 0)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -100,13 +99,13 @@ class DetailsScreen extends StatelessWidget {
                     SizedBox(
                       height: 100,
                       child: ListView.builder(
-                        itemCount: contentDetails['seasons'].length,
+                        itemCount: detailsProvider.seasons.length,
                         itemBuilder: (context, index) => Padding(
                           padding: const EdgeInsets.only(
                             left: 10,
                           ),
                           child: Text(
-                            "- ${contentDetails['seasons'][index]['name']} broj epizoda ${contentDetails['seasons'][index]['episodes'].length}",
+                            "- ${detailsProvider.seasons[index]['name']} broj epizoda ${detailsProvider.seasons[index]['episodes'].length}",
                             style: theme.textTheme.subtitle2,
                           ),
                         ),
@@ -140,15 +139,14 @@ class DetailsScreen extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              ChangeNotifierProvider.value(
-                value: ContentProvider(),
-                builder: (context, child) => Column(
+              Consumer<SingleMovieProvider>(
+                builder: (context, provider, child) => Column(
                   children: [
                     Container(
                       padding: const EdgeInsets.only(left: 10),
                       height: 150,
                       child: ListView.builder(
-                        itemCount: contentDetails['contentComments'].length,
+                        itemCount: detailsProvider.conentComments.length,
                         itemBuilder: (context, index) => Card(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -156,12 +154,12 @@ class DetailsScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  contentDetails['contentComments'][index]
-                                      ['user']['firstName'],
+                                  detailsProvider.conentComments[index]['user']
+                                      ['firstName'],
                                   style: theme.textTheme.caption,
                                 ),
                                 Text(
-                                  contentDetails['contentComments'][index]
+                                  detailsProvider.conentComments[index]
                                       ['comment'],
                                   style: theme.textTheme.subtitle1,
                                 ),
@@ -173,27 +171,62 @@ class DetailsScreen extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        TextField(
-                          controller: textEditingController,
+                        Form(
+                          key: _formKey,
+                          child: TextFormField(
+                            controller: textEditingController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Unesite komentar*";
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              hintText: 'Unesite komentar',
+                              labelText: 'Komentar',
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
-                        ElevatedButton(
+                        TextButton(
                           onPressed: () {
-                            final contentProvider =
-                                Provider.of<ContentProvider>(context,
-                                    listen: false);
-                            contentProvider.addComment(
-                              1,
-                              contentId,
-                              "Ovo je neki komentar",
-                            );
+                            if (_formKey.currentState!.validate()) {
+                              provider.addCommentApiCall(
+                                detailsProvider.conentId,
+                                textEditingController.text,
+                              );
+                            }
                           },
                           child: const Text("Pošalji komentar"),
+                          style: ButtonStyle(
+                            foregroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

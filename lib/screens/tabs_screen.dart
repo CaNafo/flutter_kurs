@@ -16,7 +16,7 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   Map<int, dynamic> listOfScreens = {
     0: ChangeNotifierProvider(
       create: (context) => HomeProvider(),
@@ -68,16 +68,16 @@ class _TabsScreenState extends State<TabsScreen> {
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             activeIcon: CircleAvatar(
-              child: Icon(Icons.home, color: Colors.white),
+              child: Icon(Icons.favorite, color: Colors.white),
               backgroundColor: Colors.blue,
             ),
             icon: Icon(Icons.favorite, color: Colors.blue),
-            label: 'School',
+            label: 'Favorites',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             activeIcon: CircleAvatar(
-              child: Icon(Icons.home, color: Colors.white),
+              child: Icon(Icons.settings, color: Colors.white),
               backgroundColor: Colors.blue,
             ),
             icon: Icon(Icons.settings, color: Colors.blue),

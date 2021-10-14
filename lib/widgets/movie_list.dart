@@ -13,7 +13,7 @@ class MovieList extends StatelessWidget {
   const MovieList({
     key,
     @required this.moviesData,
-    @required this.title,
+    this.title,
   }) : super(key: key);
 
   @override

@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:movies_app/const.dart';
+import 'package:movies_app/widgets/all_content.dart';
+import 'package:movies_app/widgets/single_content.dart';
 import 'package:provider/provider.dart';
 
 import 'package:movies_app/providers/content_provider.dart';
@@ -15,8 +17,6 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   var chosenTab = 0;
-
-  var showContent = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,56 +81,11 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(
               height: 30,
             ),
-            Container(
-              padding: const EdgeInsets.all(
-                8,
+            if (chosenTab != 0)
+              SingleContent(
+                contentType: chosenTab,
               ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                  10,
-                ),
-                color: Constants.moviesListContainerColor,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        showContent = !showContent;
-                      });
-                    },
-                    child: Row(
-                      children: const [
-                        Text("Domaći filmovi"),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: Icon(Icons.arrow_drop_down,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (showContent)
-                    Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          height: 50,
-                          color: Colors.blueGrey,
-                          child: const Center(
-                            child: Text("Lista filmova..."),
-                          ),
-                        ),
-                      ],
-                    )
-                ],
-              ),
-            ),
+            if (chosenTab == 0) const AllContent(),
           ],
         ));
   }

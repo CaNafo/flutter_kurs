@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:movies_app/const.dart';
+import 'package:provider/provider.dart';
+
 import 'package:movies_app/widgets/all_content.dart';
 import 'package:movies_app/widgets/movie_list.dart';
 import 'package:movies_app/widgets/single_content.dart';
-import 'package:provider/provider.dart';
 
 import 'package:movies_app/providers/content_provider.dart';
 

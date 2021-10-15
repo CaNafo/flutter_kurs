@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/widgets/movie_list.dart';
-import 'package:movies_app/widgets/simple_tab.dart';
 import 'package:provider/provider.dart';
 
+import 'package:movies_app/widgets/movie_list.dart';
+import 'package:movies_app/widgets/simple_tab.dart';
 import 'package:movies_app/providers/home_provider.dart';
 
 class HomeScreen extends StatefulWidget {

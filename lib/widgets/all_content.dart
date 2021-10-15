@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/widgets/expandable_movies_list.dart';
-import 'package:movies_app/widgets/movie_list.dart';
 import 'package:provider/provider.dart';
 
+import 'package:movies_app/widgets/expandable_movies_list.dart';
+import 'package:movies_app/widgets/movie_list.dart';
 import 'package:movies_app/providers/content_provider.dart';
 
 class AllContent extends StatelessWidget {

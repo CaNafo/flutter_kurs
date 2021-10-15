@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/providers/content_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'package:movies_app/providers/content_provider.dart';
 import 'package:movies_app/providers/home_provider.dart';
 import 'package:movies_app/screens/favorites_screen.dart';
 import 'package:movies_app/screens/home_screen.dart';

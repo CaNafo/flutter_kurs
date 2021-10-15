@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/providers/single_movie_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:movies_app/const.dart';
 import 'package:movies_app/screens/details_screen.dart';
+import 'package:movies_app/providers/single_movie_provider.dart';
 
 class MovieList extends StatelessWidget {
   final List<Map<String, dynamic>>? moviesData;

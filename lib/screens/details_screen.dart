@@ -1,10 +1,8 @@
-import 'package:movies_app/providers/auth_provider.dart';
-import 'package:movies_app/providers/single_movie_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutter/material.dart';
-import 'package:movies_app/providers/content_provider.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:movies_app/providers/single_movie_provider.dart';
 
 class DetailsScreen extends StatelessWidget {
   DetailsScreen({Key? key}) : super(key: key);
@@ -88,7 +86,7 @@ class DetailsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              if (detailsProvider.seasons.length > 0)
+              if (detailsProvider.seasons.isEmpty)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

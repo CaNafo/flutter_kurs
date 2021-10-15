@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:movies_app/const.dart';
 import 'package:movies_app/providers/auth_provider.dart';
 import 'package:movies_app/screens/tabs_screen.dart';
-
 import 'package:movies_app/widgets/login_button_small.dart';
 
 class LoginScreen extends StatelessWidget {

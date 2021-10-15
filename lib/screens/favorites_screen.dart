@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/screens/search_screen.dart';
+import 'package:provider/provider.dart';
+
+import 'package:movies_app/providers/single_movie_provider.dart';
+import 'package:movies_app/providers/favourites_provider.dart';
+import 'package:movies_app/widgets/single_movie.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
@@ -8,23 +14,127 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
+  var chosenTab = 0;
+
   @override
   Widget build(BuildContext context) {
-    final double windowsHeight = MediaQuery.of(context).size.height;
+    final displaySize = MediaQuery.of(context).size;
+    final favouritesProvider = Provider.of<FavouritesProvider>(context);
+
     return Padding(
-        padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 30.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              "Ovo je favorites screen!",
-              style: Theme.of(context).textTheme.headline1,
-              textAlign: TextAlign.left,
-            ),
-            SizedBox(
-              height: windowsHeight * 0.15,
-            ),
-          ],
-        ));
+      padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 30.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              CustomTabElevatedButton(
+                tabTitle: "Sve",
+                active: chosenTab == 0,
+                onTap: () {
+                  if (chosenTab != 0) {
+                    setState(
+                      () {
+                        chosenTab = 0;
+                      },
+                    );
+                  }
+                },
+              ),
+              CustomTabElevatedButton(
+                tabTitle: "Filmovi",
+                active: chosenTab == 1,
+                onTap: () {
+                  if (chosenTab != 1) {
+                    setState(
+                      () {
+                        chosenTab = 1;
+                      },
+                    );
+                  }
+                },
+              ),
+              CustomTabElevatedButton(
+                tabTitle: "Serije",
+                active: chosenTab == 2,
+                onTap: () {
+                  if (chosenTab != 2) {
+                    setState(
+                      () {
+                        chosenTab = 2;
+                      },
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          FutureBuilder(
+            future: favouritesProvider.getAllFavourites(chosenTab),
+            builder: (context,
+                    AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) =>
+                snapshot.connectionState == ConnectionState.waiting
+                    ? const CircularProgressIndicator()
+                    : snapshot.data != null && snapshot.data!.isNotEmpty
+                        ? SizedBox(
+                            height: displaySize.height * 0.67,
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              children:
+                                  List.generate(snapshot.data!.length, (index) {
+                                return ChangeNotifierProvider.value(
+                                  value: SingleMovieProvider(),
+                                  builder: (context, child) => Stack(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(2),
+                                        padding: const EdgeInsets.all(5.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: SingleMovie(
+                                          favourites: true,
+                                          displaySize: displaySize,
+                                          moviesData: snapshot.data![index],
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 3,
+                                        top: 3,
+                                        child: InkWell(
+                                          onTap: () async {
+                                            await favouritesProvider
+                                                .addRemoveFavourite(
+                                              false,
+                                              snapshot.data![index]
+                                                  ['contentId'],
+                                            );
+                                          },
+                                          child: const Icon(
+                                            Icons.favorite,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ),
+                          )
+                        : Center(
+                            child: Text(
+                              "No favourite content!",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+          ),
+        ],
+      ),
+    );
   }
 }

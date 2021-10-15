@@ -111,6 +111,7 @@ class MyApp extends StatelessWidget {
                       ? const TabsScreen()
                       : const LoginScreen(),
         ),
+        initialRoute: "/",
         routes: {
           TabsScreen.routeName: (context) => const TabsScreen(),
         },

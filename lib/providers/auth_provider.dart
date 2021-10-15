@@ -29,4 +29,9 @@ class AuthProvider with ChangeNotifier {
 
     return true;
   }
+
+  Future<void> logOut() async {
+    await Token.removeToken();
+    notifyListeners();
+  }
 }

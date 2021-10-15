@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:movies_app/widgets/movie_list.dart';
 import 'package:movies_app/widgets/simple_tab.dart';
 import 'package:movies_app/providers/home_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({key}) : super(key: key);
@@ -17,6 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
+
     return Padding(
         padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 30.0),
         child: Column(
@@ -25,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               children: [
                 SimpleTab(
-                  tabTitle: "Filmovi",
+                  tabTitle: localization!.movies,
                   onTap: () {
                     setState(() {
                       showMovies = !showMovies;
@@ -37,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 20,
                 ),
                 SimpleTab(
-                  tabTitle: "Serije",
+                  tabTitle: localization.series,
                   onTap: () {
                     setState(() {
                       showMovies = !showMovies;
@@ -65,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           : snapshot.data != null
                               ? MovieList(
                                   moviesData: snapshot.data,
-                                  title: "Najnovije",
+                                  title: localization.recently_released,
                                 )
                               : const Text(
                                   "No data",
@@ -91,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           : snapshot.data != null
                               ? MovieList(
                                   moviesData: snapshot.data,
-                                  title: "Najviše ocjene",
+                                  title: localization.best_rate,
                                 )
                               : const Text(
                                   "No data",

@@ -10,7 +10,7 @@ class FavouritesProvider with ChangeNotifier {
   Future<List<Map<String, dynamic>>?> getAllFavourites(int typeID) async {
     var token = await Token.getJwtToken();
 
-    var apiUrl = "${Constants.baseUrl}/user/favourite-movies";
+    var apiUrl = "${Constants.baseUrl}/user/favourite-content";
     var headers = {
       "Content-Type": "application/json",
       "Accept": "*/*",
@@ -29,9 +29,9 @@ class FavouritesProvider with ChangeNotifier {
         .toList();
 
     if (typeID != 0) {
-      for (var element in resList) {
-        if (element['contentType']['contentTypeId'] != typeID) {
-          resList.remove(element);
+      for (var i = 0; i < resList.length; i++) {
+        if (resList[i]['contentType']['contentTypeId'] != typeID) {
+          resList.removeAt(i);
         }
       }
     }

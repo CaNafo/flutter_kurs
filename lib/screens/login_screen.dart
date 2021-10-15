@@ -115,7 +115,12 @@ class LoginDialog extends StatelessWidget {
                   return null;
                 },
                 controller: emailController,
-                decoration: const InputDecoration(hintText: "email@test.com"),
+                decoration: const InputDecoration(
+                  hintText: "email@test.com",
+                ),
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
               ),
               TextFormField(
                 validator: (value) {
@@ -127,6 +132,9 @@ class LoginDialog extends StatelessWidget {
                 controller: passController,
                 obscureText: true,
                 decoration: const InputDecoration(hintText: "lozinka"),
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
               ),
             ],
           ),

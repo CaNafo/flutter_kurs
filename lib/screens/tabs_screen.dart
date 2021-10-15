@@ -17,7 +17,7 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 0;
   Map<int, dynamic> listOfScreens = {
     0: ChangeNotifierProvider(
       create: (context) => HomeProvider(),

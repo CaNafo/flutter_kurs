@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:movies_app/providers/single_movie_provider.dart';
 import 'package:movies_app/providers/favourites_provider.dart';
 import 'package:movies_app/widgets/single_movie.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Widget build(BuildContext context) {
     final displaySize = MediaQuery.of(context).size;
     final favouritesProvider = Provider.of<FavouritesProvider>(context);
+    final localization = AppLocalizations.of(context);
 
     return Padding(
       padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 30.0),
@@ -28,7 +30,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           Row(
             children: [
               CustomTabElevatedButton(
-                tabTitle: "Sve",
+                tabTitle: localization!.all,
                 active: chosenTab == 0,
                 onTap: () {
                   if (chosenTab != 0) {
@@ -41,7 +43,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 },
               ),
               CustomTabElevatedButton(
-                tabTitle: "Filmovi",
+                tabTitle: localization.movies,
                 active: chosenTab == 1,
                 onTap: () {
                   if (chosenTab != 1) {
@@ -54,7 +56,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 },
               ),
               CustomTabElevatedButton(
-                tabTitle: "Serije",
+                tabTitle: localization.series,
                 active: chosenTab == 2,
                 onTap: () {
                   if (chosenTab != 2) {
@@ -128,7 +130,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           )
                         : Center(
                             child: Text(
-                              "No favourite content!",
+                              localization.no_fav_data,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),

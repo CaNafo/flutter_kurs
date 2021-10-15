@@ -15,6 +15,7 @@ class SingleMovieProvider with ChangeNotifier {
   late List<dynamic> _seasons;
   late List<dynamic> _contentComments;
   late int _contentId;
+  late bool isFavorite = false;
 
   String get contentTitle => _contentTitle;
 
@@ -115,5 +116,37 @@ class SingleMovieProvider with ChangeNotifier {
     }
 
     return res.statusCode == 200;
+  }
+
+  Future<void> addToFavorites() async {
+    var apiUrl = Constants.baseUrl;
+    var token = await Token.getJwtToken();
+    var parsedToken = await Token.decodeJWT();
+
+    isFavorite = !isFavorite;
+    var headers = {
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Authorization": "Bearer $token",
+    };
+
+    var res = await http.post(
+      Uri.parse('$apiUrl/user/favour'),
+      body: jsonEncode(
+        {
+          "userId": parsedToken!['userId'],
+          "contentId": _contentId,
+          "favourite": isFavorite
+        },
+      ),
+      headers: headers,
+    );
+
+    if (res.statusCode == 200) {
+      notifyListeners();
+    } else {
+      isFavorite = !isFavorite;
+    }
   }
 }

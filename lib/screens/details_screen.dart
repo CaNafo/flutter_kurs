@@ -3,6 +3,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:movies_app/providers/single_movie_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailsScreen extends StatelessWidget {
   DetailsScreen({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final detailsProvider = Provider.of<SingleMovieProvider>(context);
+    final localization = AppLocalizations.of(context);
 
     final _controller = YoutubePlayerController(
       initialVideoId: detailsProvider.trailerLink,
@@ -41,8 +43,22 @@ class DetailsScreen extends StatelessWidget {
                   style: theme.textTheme.headline2,
                 ),
               ),
+              Consumer<SingleMovieProvider>(
+                builder: (context, value, child) => Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      value.addToFavorites();
+                    },
+                    icon: Icon(
+                      Icons.favorite,
+                      color: value.isFavorite ? Colors.red : Colors.white,
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(
-                height: 30,
+                height: 5,
               ),
               SizedBox(
                 height: 200,
@@ -58,21 +74,25 @@ class DetailsScreen extends StatelessWidget {
                 height: 30,
               ),
               Text(
-                "Trajanje: ${detailsProvider.duration} minuta",
+                localization!.duration(
+                  detailsProvider.duration.toString(),
+                ),
                 style: theme.textTheme.subtitle1,
               ),
               const SizedBox(
                 height: 5,
               ),
               Text(
-                "Godina izdavanja: ${detailsProvider.year}",
+                localization.air_date(
+                  detailsProvider.year.toString(),
+                ),
                 style: theme.textTheme.subtitle1,
               ),
               const SizedBox(
                 height: 5,
               ),
               Text(
-                "Žanrovi:",
+                localization.genres,
                 style: theme.textTheme.subtitle1,
               ),
               Container(
@@ -86,12 +106,12 @@ class DetailsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              if (detailsProvider.seasons.isEmpty)
+              if (detailsProvider.seasons.isNotEmpty)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Lista sezona: ",
+                      localization.seasons,
                       style: theme.textTheme.subtitle1,
                     ),
                     SizedBox(
@@ -122,7 +142,7 @@ class DetailsScreen extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    "Komentari",
+                    localization.comments,
                     style: theme.textTheme.subtitle1,
                   ),
                   const SizedBox(
@@ -179,6 +199,9 @@ class DetailsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Column(
                       children: [
                         Form(
@@ -187,30 +210,30 @@ class DetailsScreen extends StatelessWidget {
                             controller: textEditingController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "Unesite komentar*";
+                                return localization.enter_comment;
                               }
                               return null;
                             },
-                            decoration: const InputDecoration(
-                              focusedBorder: OutlineInputBorder(
+                            decoration: InputDecoration(
+                              focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                               ),
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                               ),
-                              hintText: 'Unesite komentar',
-                              labelText: 'Komentar',
-                              labelStyle: TextStyle(
+                              hintText: localization.comment,
+                              labelText: localization.comment,
+                              labelStyle: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w300,
                               ),
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                 color: Colors.white,
                               ),
-                              prefixIcon: Icon(
+                              prefixIcon: const Icon(
                                 Icons.edit,
                                 color: Colors.white,
                               ),
@@ -226,7 +249,7 @@ class DetailsScreen extends StatelessWidget {
                               );
                             }
                           },
-                          child: const Text("Pošalji komentar"),
+                          child: Text(localization.send_comment),
                           style: ButtonStyle(
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.white),

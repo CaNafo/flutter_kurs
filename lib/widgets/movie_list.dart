@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/providers/single_movie_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:movies_app/const.dart';
-import 'package:movies_app/providers/content_provider.dart';
 import 'package:movies_app/screens/details_screen.dart';
 
 class MovieList extends StatelessWidget {
@@ -12,7 +12,7 @@ class MovieList extends StatelessWidget {
   const MovieList({
     key,
     @required this.moviesData,
-    @required this.title,
+    this.title,
   }) : super(key: key);
 
   @override
@@ -48,9 +48,13 @@ class MovieList extends StatelessWidget {
           child: ListView.builder(
             itemCount: moviesData!.length,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, int index) => SingleMovie(
-              displaySize: displaySize,
-              moviesData: moviesData![index],
+            itemBuilder: (BuildContext context, int index) =>
+                ChangeNotifierProvider.value(
+              value: SingleMovieProvider(),
+              builder: (context, child) => SingleMovie(
+                displaySize: displaySize,
+                moviesData: moviesData![index],
+              ),
             ),
           ),
         ),
@@ -71,60 +75,75 @@ class SingleMovie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: ContentProvider(),
-      builder: (context, child) => InkWell(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) => const AlertDialog(
-              elevation: 5,
-              backgroundColor: Colors.transparent,
-              content: SizedBox(
-                height: 250,
-                width: 50,
-                child: CircularProgressIndicator(),
-              ),
+    final contentProvider =
+        Provider.of<SingleMovieProvider>(context, listen: false);
+    return InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => const AlertDialog(
+            elevation: 5,
+            backgroundColor: Colors.transparent,
+            content: SizedBox(
+              height: 250,
+              width: 50,
+              child: CircularProgressIndicator(),
             ),
-          );
-          Provider.of<ContentProvider>(context, listen: false)
-              .getContentDetails(
-            moviesData!['contentId'],
-          )
-              .then((value) {
-            Navigator.of(context).pop();
-            Navigator.pushNamed(context, DetailsScreen.routeName,
-                arguments: value);
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.all(
-            8.0,
           ),
-          width: displaySize.width * 0.5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: SizedBox(
-                  height: displaySize.width * 0.3,
-                  width: displaySize.width * 0.5,
-                  child: Image.network(
-                    moviesData!['coverLink'],
-                    fit: BoxFit.cover,
+        );
+
+        contentProvider
+            .getContentDetails(
+          moviesData!['contentId'],
+        )
+            .then((value) {
+          Navigator.of(context).pop();
+          if (value != null) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider.value(
+                  value: SingleMovieProvider.value(
+                    value,
+                    moviesData!['contentId'],
                   ),
+                  builder: (ctx, child) => DetailsScreen(),
                 ),
               ),
-              const SizedBox(
-                height: 5,
+            );
+          }
+          // Navigator.pushNamed(context,DetailsScreen.routeName, arguments: {
+          //   "data": value,
+          //   "contentId": moviesData!['contentId']
+          // });
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.all(
+          8.0,
+        ),
+        width: displaySize.width * 0.5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: SizedBox(
+                height: displaySize.width * 0.3,
+                width: displaySize.width * 0.5,
+                child: Image.network(
+                  moviesData!['coverLink'],
+                  fit: BoxFit.cover,
+                ),
               ),
-              Text(
-                moviesData!["title"],
-                style: const TextStyle(color: Colors.white, fontSize: 15),
-              )
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              moviesData!["title"],
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+            )
+          ],
         ),
       ),
     );

@@ -114,7 +114,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           TabsScreen.routeName: (context) => const TabsScreen(),
-          DetailsScreen.routeName: (context) => const DetailsScreen(),
+          DetailsScreen.routeName: (context) => DetailsScreen(),
         },
       ),
     );

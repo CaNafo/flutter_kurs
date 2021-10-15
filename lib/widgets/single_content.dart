@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:movies_app/widgets/expandable_movies_list.dart';
 import 'package:movies_app/widgets/movie_list.dart';
@@ -42,8 +44,11 @@ class SingleContent extends StatelessWidget {
                               : ExpandableMoviesList(
                                   title: snapshot.data![index]['name'],
                                   child: MovieList(
-                                    moviesData: contentProvider.getMoviesList(
-                                        snapshot.data![index]['genreId']),
+                                    moviesData: contentType == 1
+                                        ? contentProvider.getMoviesList(
+                                            snapshot.data![index]['genreId'])
+                                        : contentProvider.getSeriesList(
+                                            snapshot.data![index]['genreId']),
                                   ),
                                 ),
                         ),

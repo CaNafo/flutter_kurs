@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/widgets/single_movie_provider.dart';
+import 'package:movies_app/providers/single_movie_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:movies_app/const.dart';
-import 'package:movies_app/providers/content_provider.dart';
 import 'package:movies_app/screens/details_screen.dart';
 
 class MovieList extends StatelessWidget {
@@ -104,7 +103,9 @@ class SingleMovie extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => ChangeNotifierProvider.value(
                   value: SingleMovieProvider.value(
-                      value, moviesData!['contentId']),
+                    value,
+                    moviesData!['contentId'],
+                  ),
                   builder: (ctx, child) => DetailsScreen(),
                 ),
               ),

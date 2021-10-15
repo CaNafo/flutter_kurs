@@ -1,5 +1,5 @@
 import 'package:movies_app/providers/auth_provider.dart';
-import 'package:movies_app/widgets/single_movie_provider.dart';
+import 'package:movies_app/providers/single_movie_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';

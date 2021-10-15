@@ -15,7 +15,7 @@ class SingleMovieProvider with ChangeNotifier {
   late List<dynamic> _seasons;
   late List<dynamic> _contentComments;
   late int _contentId;
-  late bool isFavorite = false;
+  late bool _isFavorite = false;
 
   String get contentTitle => _contentTitle;
 
@@ -24,6 +24,8 @@ class SingleMovieProvider with ChangeNotifier {
   int get duration => _duration;
 
   int get year => _year;
+
+  bool get isFavorite => _isFavorite;
 
   List<dynamic> get genres => [..._genres];
 
@@ -45,6 +47,7 @@ class SingleMovieProvider with ChangeNotifier {
     _seasons = data['seasons'];
     _contentComments = data['contentComments'];
     _contentId = contentId;
+    _isFavorite = data['favourite'];
   }
 
   int get conentId => _contentId;
@@ -123,7 +126,7 @@ class SingleMovieProvider with ChangeNotifier {
     var token = await Token.getJwtToken();
     var parsedToken = await Token.decodeJWT();
 
-    isFavorite = !isFavorite;
+    _isFavorite = !_isFavorite;
     var headers = {
       "Content-Type": "application/json",
       "Accept": "*/*",
@@ -137,7 +140,7 @@ class SingleMovieProvider with ChangeNotifier {
         {
           "userId": parsedToken!['userId'],
           "contentId": _contentId,
-          "favourite": isFavorite
+          "favourite": _isFavorite
         },
       ),
       headers: headers,
@@ -146,7 +149,7 @@ class SingleMovieProvider with ChangeNotifier {
     if (res.statusCode == 200) {
       notifyListeners();
     } else {
-      isFavorite = !isFavorite;
+      _isFavorite = !_isFavorite;
     }
   }
 }

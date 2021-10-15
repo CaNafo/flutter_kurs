@@ -81,7 +81,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     ? const CircularProgressIndicator()
                     : snapshot.data != null && snapshot.data!.isNotEmpty
                         ? SizedBox(
-                            height: displaySize.height * 0.67,
+                            height: displaySize.height * 0.6,
                             child: GridView.count(
                               crossAxisCount: 2,
                               children:

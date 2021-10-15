@@ -148,7 +148,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       .logOut()
                       .then(
                         (value) =>
-                            Navigator.of(context).pushReplacementNamed("/"),
+                            Navigator.of(context).pushReplacementNamed("login"),
                       );
                 },
                 child: Text(localization!.logout),

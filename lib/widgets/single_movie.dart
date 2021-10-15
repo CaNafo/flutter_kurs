@@ -70,7 +70,7 @@ class SingleMovie extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: SizedBox(
-                height: displaySize.width * 0.3,
+                height: displaySize.width * 0.25,
                 width: displaySize.width * 0.5,
                 child: Image.network(
                   moviesData!['coverLink'],

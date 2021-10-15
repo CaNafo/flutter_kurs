@@ -140,6 +140,7 @@ class MyApp extends StatelessWidget {
                 initialRoute: "/",
                 routes: {
                   TabsScreen.routeName: (context) => const TabsScreen(),
+                  'login': (context) => const LoginScreen(),
                 },
               ),
             ),

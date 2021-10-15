@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/providers/content_provider.dart';
+import 'package:movies_app/providers/favourites_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'package:movies_app/providers/content_provider.dart';
 import 'package:movies_app/providers/home_provider.dart';
 import 'package:movies_app/screens/favorites_screen.dart';
 import 'package:movies_app/screens/home_screen.dart';
@@ -26,16 +27,29 @@ class _TabsScreenState extends State<TabsScreen> {
       create: (context) => ContentProvider(),
       child: const SearchScreen(),
     ),
-    2: const FavoritesScreen(),
+    2: ChangeNotifierProvider.value(
+      value: FavouritesProvider(),
+      child: const FavoritesScreen(),
+    ),
     3: const SettingsScreen()
   };
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: const [
+        actions: [
           CircleAvatar(
-            child: Icon(Icons.supervised_user_circle),
+            backgroundColor: Colors.brown,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _selectedIndex = 3;
+                });
+              },
+              icon: const Icon(
+                Icons.person,
+              ),
+            ),
           )
         ],
         automaticallyImplyLeading: false,

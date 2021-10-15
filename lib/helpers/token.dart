@@ -19,4 +19,9 @@ class Token {
     Map<String, dynamic> payload = Jwt.parseJwt(token);
     return (payload);
   }
+
+  static Future<void> removeToken() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +15,7 @@ class SingleMovieProvider with ChangeNotifier {
   late List<dynamic> _seasons;
   late List<dynamic> _contentComments;
   late int _contentId;
+  late bool _isFavorite = false;
 
   String get contentTitle => _contentTitle;
 
@@ -24,6 +24,8 @@ class SingleMovieProvider with ChangeNotifier {
   int get duration => _duration;
 
   int get year => _year;
+
+  bool get isFavorite => _isFavorite;
 
   List<dynamic> get genres => [..._genres];
 
@@ -45,6 +47,7 @@ class SingleMovieProvider with ChangeNotifier {
     _seasons = data['seasons'];
     _contentComments = data['contentComments'];
     _contentId = contentId;
+    _isFavorite = data['favourite'];
   }
 
   int get conentId => _contentId;
@@ -116,5 +119,37 @@ class SingleMovieProvider with ChangeNotifier {
     }
 
     return res.statusCode == 200;
+  }
+
+  Future<void> addToFavorites() async {
+    var apiUrl = Constants.baseUrl;
+    var token = await Token.getJwtToken();
+    var parsedToken = await Token.decodeJWT();
+
+    _isFavorite = !_isFavorite;
+    var headers = {
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Authorization": "Bearer $token",
+    };
+
+    var res = await http.post(
+      Uri.parse('$apiUrl/user/favour'),
+      body: jsonEncode(
+        {
+          "userId": parsedToken!['userId'],
+          "contentId": _contentId,
+          "favourite": _isFavorite
+        },
+      ),
+      headers: headers,
+    );
+
+    if (res.statusCode == 200) {
+      notifyListeners();
+    } else {
+      _isFavorite = !_isFavorite;
+    }
   }
 }

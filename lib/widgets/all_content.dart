@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/widgets/expandable_movies_list.dart';
-import 'package:movies_app/widgets/movie_list.dart';
 import 'package:provider/provider.dart';
 
+import 'package:movies_app/widgets/expandable_movies_list.dart';
+import 'package:movies_app/widgets/movie_list.dart';
 import 'package:movies_app/providers/content_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AllContent extends StatelessWidget {
   const AllContent({
@@ -14,6 +15,7 @@ class AllContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final contentProvider = Provider.of<ContentProvider>(context);
     final mediaQuery = MediaQuery.of(context);
+    final localization = AppLocalizations.of(context);
 
     return FutureBuilder(
       future: contentProvider.getAllGenres(),
@@ -42,7 +44,7 @@ class AllContent extends StatelessWidget {
                                         )
                                       : ExpandableMoviesList(
                                           title:
-                                              '${snapshot.data![index]['name']} (Filmovi)',
+                                              '${snapshot.data![index]['name']} (${localization!.movies})',
                                           child: MovieList(
                                             moviesData:
                                                 contentProvider.getMoviesList(
@@ -64,7 +66,7 @@ class AllContent extends StatelessWidget {
                                         )
                                       : ExpandableMoviesList(
                                           title:
-                                              '${snapshot.data![index]['name']} (Serije)',
+                                              '${snapshot.data![index]['name']} (${localization!.series})',
                                           child: MovieList(
                                             moviesData:
                                                 contentProvider.getSeriesList(

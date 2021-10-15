@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:movies_app/const.dart';
 
 class ExpandableMoviesList extends StatefulWidget {

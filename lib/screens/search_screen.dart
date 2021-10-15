@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:movies_app/const.dart';
+import 'package:provider/provider.dart';
+
 import 'package:movies_app/widgets/all_content.dart';
 import 'package:movies_app/widgets/movie_list.dart';
 import 'package:movies_app/widgets/single_content.dart';
-import 'package:provider/provider.dart';
-
 import 'package:movies_app/providers/content_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -25,6 +23,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final windowsSize = MediaQuery.of(context).size;
     final contentProvider = Provider.of<ContentProvider>(context);
+    final localization = AppLocalizations.of(context);
 
     return SingleChildScrollView(
       child: Padding(
@@ -58,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
               Row(
                 children: [
                   CustomTabElevatedButton(
-                    tabTitle: "Sve",
+                    tabTitle: localization!.all,
                     active: chosenTab == 0,
                     onTap: () {
                       if (chosenTab != 0) {
@@ -71,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     },
                   ),
                   CustomTabElevatedButton(
-                    tabTitle: "Filmovi",
+                    tabTitle: localization.movies,
                     active: chosenTab == 1,
                     onTap: () {
                       if (chosenTab != 1) {
@@ -84,7 +83,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     },
                   ),
                   CustomTabElevatedButton(
-                    tabTitle: "Serije",
+                    tabTitle: localization.series,
                     active: chosenTab == 2,
                     onTap: () {
                       if (chosenTab != 2) {
@@ -171,6 +170,7 @@ class CustomSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
@@ -190,9 +190,9 @@ class CustomSearchField extends StatelessWidget {
             width: windowsSize.width * 0.75,
             child: TextField(
               onChanged: onTextChanged,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "Search",
+                hintText: localization!.search,
               ),
               style: const TextStyle(color: Colors.black),
             ),

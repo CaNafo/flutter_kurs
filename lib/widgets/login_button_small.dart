@@ -16,19 +16,6 @@ class LoginButtonSmall extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => onTapFunction(),
         child: Text(buttonText),
-        // style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-        //       backgroundColor: MaterialStateProperty.all(
-        //         Theme.of(context).scaffoldBackgroundColor,
-        //       ),
-        //       shape: MaterialStateProperty.all(
-        //         RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(36),
-        //           side: const BorderSide(
-        //             color: Color.fromRGBO(79, 79, 79, 1),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(5),
           backgroundColor: MaterialStateProperty.all(
